@@ -1,18 +1,21 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import GithubContext from "../../context/github/GithubContext";
 
 const UserSearch = () => {
   const [text, setText] = useState("");
 
-  const searchHandler = (event) => setText(event.target.value);
-  const submitHandler = (event)=>{
-      event.preventDefault()
-  }
+  const { users } = useContext(GithubContext);
 
-  if(text===''){
-      alert('please enter something')
-  }else{
-      setText('')
-  }
+  const searchHandler = (event) => setText(event.target.value);
+  const submitHandler = (event) => {
+    event.preventDefault();
+
+    if (text === "") {
+      alert("please enter something");
+    } else {
+      setText("");
+    }
+  };
 
   return (
     <div
@@ -33,18 +36,19 @@ const UserSearch = () => {
               />
               <button
                 type="submit"
-                className="absolute top-0 right-0 r
-                           ounded-l-none w-36 btn btn-lg"
-                >           
+                className="absolute top-0 right-0 rounded-l-none w-36 btn btn-lg"
+              >
                 Go
               </button>
             </div>
           </div>
         </form>
       </div>
-      <div>
-        <button className="btn btn-warning btn-lg">Clear</button>
-      </div>
+      {users.length > 0 && (
+        <div>
+          <button className="btn btn-warning btn-lg">Clear</button>
+        </div>
+      )}
     </div>
   );
 };
