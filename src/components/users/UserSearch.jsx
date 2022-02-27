@@ -4,19 +4,20 @@ import GithubContext from "../../context/github/GithubContext";
 const UserSearch = () => {
   const [text, setText] = useState("");
 
-  const { users } = useContext(GithubContext);
+  const { users, searchUsers,clearUsers} = useContext(GithubContext);
 
   const searchHandler = (event) => setText(event.target.value);
   const submitHandler = (event) => {
-    event.preventDefault();
+    event.preventDefault(); 
 
     if (text === "") {
       alert("please enter something");
     } else {
-      setText("");
-    }
-  };
+      searchUsers(text)
 
+      setText("");
+         }
+  };
   return (
     <div
       className="grid  grid-cols-1 xl:grid-cols-2 
@@ -29,7 +30,7 @@ const UserSearch = () => {
               <input
                 type="text"
                 className="w-full pr-40 bg-gray-200 
-                        input-lg text-black"
+                input-lg text-black"
                 placeholder="Search"
                 value={text}
                 onChange={searchHandler}
@@ -46,7 +47,7 @@ const UserSearch = () => {
       </div>
       {users.length > 0 && (
         <div>
-          <button className="btn btn-warning btn-lg">Clear</button>
+          <button onClick={clearUsers} className="btn btn-warning btn-lg">Clear</button>
         </div>
       )}
     </div>
