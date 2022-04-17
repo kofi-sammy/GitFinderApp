@@ -1,22 +1,27 @@
 import { useState, useContext } from "react";
 import GithubContext from "../../context/github/GithubContext";
+import AlertContext from "../../context/alert/AlertContext";
+import { searchUsers } from "../../context/github/GithubActions";
+import { ACTIONS_CALL_API , CLEAR_USERS, GET_USERS} from "../../context/github/GithubReducer";
 
 const UserSearch = () => {
   const [text, setText] = useState("");
 
-  const { users, searchUsers,clearUsers} = useContext(GithubContext);
+  const { users,dispatch } = useContext(GithubContext);
+  const  {setAlert} = useContext(AlertContext) 
 
   const searchHandler = (event) => setText(event.target.value);
-  const submitHandler = (event) => {
+  const submitHandler = async (event) =>  {
     event.preventDefault(); 
 
     if (text === "") {
-      alert("please enter something");
+      setAlert("please enter something", 'error');
     } else {
-      searchUsers(text)
-
-      setText("");
-         }
+      dispatch({type: ACTIONS_CALL_API})
+     const users = await searchUsers(text)
+     dispatch({type:GET_USERS, payload:users})
+       setText("");
+    }
   };
   return (
     <div
@@ -47,7 +52,7 @@ const UserSearch = () => {
       </div>
       {users.length > 0 && (
         <div>
-          <button onClick={clearUsers} className="btn btn-warning btn-lg">Clear</button>
+          <button onClick={() =>dispatch({type: CLEAR_USERS})} className="btn btn-warning btn-lg">Clear</button>
         </div>
       )}
     </div>

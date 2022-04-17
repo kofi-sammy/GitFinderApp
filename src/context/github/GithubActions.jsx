@@ -10,26 +10,21 @@ const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
           Authorization: `token ${GITHUB_TOKEN}`,
         },
       });
+    
      const item = res.data.items
       return item
+     
   };
- 
-
   //Get a Single User
  export const getUser = async (login) => {
     const res = await api.get(`/users/${login}`,{
         headers: {
           Authorization: `token ${GITHUB_TOKEN}`,
         },
-      
     });
-      //Checking for Error
-      if(res.status === 404){
-        window.location = '/notfound'
-      }else{
-         return res.data 
-         
-      }
+    const itemData = res.data
+    return itemData 
+  }
 
-        // console.log(res.data)
- }
+ 
+      
